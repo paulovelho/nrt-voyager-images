@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+
+  nrt_container:
+    hostname: oceania-api.localhost.com
+    container_name: "nrt"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes: 
+      - ./:/var/www/app
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
