@@ -13,20 +13,22 @@ class SoundController {
 		this.wavesurfer = WaveSurfer.create({
 				container: this.container,
 				waveColor: '#F00',
-				progressColor: '#0F0',
+				progressColor: '#000',
 				scrollParent: true,
 		});
 
 		let slider = document.querySelector('[data-action="zoom"]');
 		slider.max = 9000;
 		slider.min = this.wavesurfer.params.minPxPerSec;
-		slider.value = slider.max/2;
+		slider.value = slider.max;
 		slider.addEventListener('input', (evt) => {
 			const value = evt.target.value;
 			debug('setting zoom to ' + value);
 			this.wavesurfer.zoom(Number(value));
 		});
-		this.wavesurfer.zoom(slider.value);		
+		this.wavesurfer.zoom(slider.value);
+		this.SetSpeed(0.5);
+
 
 		this.wavesurfer.setHeight(200);
 	}
@@ -101,6 +103,7 @@ class SoundController {
 	}
 	Faster() {
 		this.speed = +this.speed + 0.1;
+		if(this.speed > 1) this.speed = 1;
 		this.UpdateSpeed();
 	}
 	Slower() {

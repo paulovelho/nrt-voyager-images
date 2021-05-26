@@ -136,6 +136,6 @@ a:hover {
 #voyager-img {
 	margin-top: 50px;
 	border: 1px solid red;
-	min-width: 200px;
-	min-height: 200px;
+	width: 512px;
+	height: 384px;
 }
