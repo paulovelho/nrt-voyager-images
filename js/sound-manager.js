@@ -34,7 +34,6 @@ class SoundController {
 	}
 
 	OnProgress(t) {
-		console.info(t);
 	}
 
 	LoadWithPeaks(audio, peaks) {
