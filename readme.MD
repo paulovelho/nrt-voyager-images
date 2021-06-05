@@ -33,3 +33,15 @@ for development this can be dockerized to `localhost.com`
 
 
 
+## python run:
+```
+python voyager.py [file] [time] [start] [end]
+```
+
+example:
+```
+python3 voyager.py circle.txt 5971 120 4541
+
+python3 voyager.py img2.txt 5901 163 5000
+python3 voyager.py img3.txt 5726 128 4940
+```

@@ -11,17 +11,12 @@ from pprint import pprint
 def plot(data):
 #	nrows, ncols = 768, 1024
 #	data = data.reshape((nrows, ncols))
-
 	print('plotting {} points'.format(len(data)))
 
 #	data = np.split(np.array(data), 512)
 #	pprint(data)
 	plt.imshow(data, vmin = 0, vmax = 256, interpolation ='nearest')
 	plt.show()
-
-
-
-
 
 
 
@@ -35,7 +30,8 @@ def fix_json(filename, time, start, end):
 			data.append( float(c[1].rstrip("\n")) )
 
 	data = scale_data(data)
-	soundFile([i for i in data], time, start, end)
+#	soundFile([i for i in data], time, start, end)
+#	checkValidStream(data, times, time, start, end)
 	imageFile(data, times, time, start, end)
 
 def scale_data(arr):
@@ -73,7 +69,7 @@ def soundFile(arr, time, start, end):
 def imageFile(data, times, time, start, end):
 	arr = [];
 	valid_time = end - start;
-	wave_length = 9;
+	wave_length = 10
 
 	print('analyzing data from wave of {}, starting at {} and ending at {}'.format(time, start, end))
 
@@ -81,6 +77,9 @@ def imageFile(data, times, time, start, end):
 	wave_end = end;
 	wave_arr = [];
 	waves = 0;
+
+	peak = 200;
+	valley = 60;
 
 	wave_size = [];
 
@@ -91,28 +90,52 @@ def imageFile(data, times, time, start, end):
 		if(t <= start): continue
 		if(t > end): continue
 
-		if(wave_start == 0):
-			wave_start = int(t);
-			wave_end = t + wave_length;
-			if(wave_end > end): continue
-			wave_arr = [];
-			print('wave starting at {}; will end at {}'.format(t, wave_end));
-
 		d = normalizeColor(data[i])
+		if(wave_start == 0):
+			if(d < valley):
+				wave_start = int(t);
+				wave_arr = [];
+				wave_end = t + wave_length;
+				if(wave_end > end): 
+					end = t
+					continue
+				print('wave starting at {}; will end at {}'.format(t, wave_end));
+			else:
+				continue
+
 		wave_arr.append(d);
-		if(t == wave_end):
+		if(wave_start > 0 and d > peak):
 			print('wave ending at {} with {} points'.format(t, len(wave_arr)));
 			wave_size.append(len(wave_arr))
 			wave_start = 0;
 			arr.append(wave_arr);
 			waves = waves + 1;
 
+	del arr[0]
 	wave_avg = math.floor( sum(wave_size) / len(wave_size) )
-	max_wave = np.max([len(a) for a in arr])
+
+	max_len = np.max([len(a) for a in arr])
+	arr = np.asarray([np.pad(a, (0, max_len - len(a)), 'constant', constant_values=0) for a in arr])
+
+	print('had {} waves with a max of {}'.format(waves, max_len))
+	arr = np.array(arr)
+	plot(arr.transpose())
 
 
-	print('had {} waves with an average of {} and maximum of {}'.format(waves, wave_avg, max_wave))
-	plot(arr)
+def checkValidStream(data, times, time, start, end):
+	arr = [];
+	wave_start = 0;
+	for i in range(len(times)):
+		t = int(times[i]*1000)
+		if(t <= start): continue
+		if(t > end): continue
+		d = normalizeColor(data[i])
+		arr.append(d);
+
+	max_value = np.max(arr)
+	min_value = np.min(arr)
+
+	print('got {} points, max: {}, min: {}'.format(len(arr), max_value, min_value))
 
 
 def normalizeColor(c):
