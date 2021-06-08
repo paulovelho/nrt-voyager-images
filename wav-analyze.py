@@ -42,11 +42,28 @@ def open_wav(file, time, start, end):
 	print('given duration: {} | estimated duration: {}'.format(time, duration));
 	print('available points: {}/{}'.format(len(time_plot), len(data)))
 
+	try:
+		data = data[:, 0];
+	except IndexError:
+		print('only one channel found');
+
 	plot_wave(data);
-	final_data = save_data(file, data, time_plot, start, end);
+	data = scale_data(data);
+	final_data = filter_data(data, time_plot, start, end);
+	save_data(file, final_data);
 
+def scale_data(arr):
+	digits = 4
+	pprint(arr);
+	max_val = float(max(arr))
+	print('scaling wave | normalizing it to {}'.format(max_val));
+	new_data = [];
+	for x in arr:
+		val = round(x / max_val, digits);
+		new_data.append(int(val*10000));
+	return new_data;
 
-def save_data(file, data, times, start, end):
+def filter_data(data, times, start, end):
 	arr = [];
 	arr_int = [];
 	print('filtering points ... (this may take some time)')
@@ -57,16 +74,15 @@ def save_data(file, data, times, start, end):
 		d = data[i];
 		arr_int.append(d);
 		arr.append(str(t) + '\t' + str(d));
-
 	plot_wave(arr_int);
+	return arr;
 
+def save_data(file, arr):
 	file_content = '\n'.join(arr);
 	file_name = './data/' + file + '.txt';
 	print('saving {} points on {}.'.format(len(arr), file_name))
 	with open(file_name, "w") as f:
 		f.write(file_content);
-
-	return arr_int;
 
 if __name__ == '__main__':
 	filename = sys.argv[1];

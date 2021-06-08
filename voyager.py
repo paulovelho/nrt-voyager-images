@@ -8,6 +8,14 @@ import matplotlib.cm as cm
 from pprint import pprint
 
 
+def scale_data(arr, max_val):
+	digits = 4
+	new_data = [];
+	for x in arr:
+		val = round(x / max_val, digits);
+		new_data.append(float(val));
+	return new_data;
+
 def parse_data(filename, peak, valley, fix):
 	data = [];
 	times = [];
@@ -31,7 +39,8 @@ def parse_data(filename, peak, valley, fix):
 			else:
 				continue;
 		else:
-			wave_arr.append(float(d));
+			val = normalizeColor(d, peak, valley);
+			wave_arr.append(d);
 			if(d > peak):
 				print('wave ending at {} with {} points'.format(i, len(wave_arr)));
 				wave_start = 0;
@@ -39,20 +48,27 @@ def parse_data(filename, peak, valley, fix):
 					if(len(wave_arr) > fix): continue;
 				wave_sizes.append(len(wave_arr))
 				arr.append(wave_arr);
+				arr.append(wave_arr);
+				arr.append(wave_arr);
 
 	# delete problematic nodes
-	del(arr[0]);
-	del(arr[len(arr)]);
+#	del(arr[0]);
+#	del(arr[len(arr)]);
+	max_len = np.max([len(a) for a in arr])
+	arr = np.asarray([np.pad(a, (0, max_len - len(a)), 'constant', constant_values=0) for a in arr])
 
-	arr = np.array(arr)
+	data = np.array(arr)
 
-	plot_image(arr);
+	pprint(data);
+
+	plot_image(data);
+
+def normalizeColor(c, peak, valley):
+	c = c - valley;
+	return c/peak;
 
 def plot_image(data):
 	data = data.transpose();
-
-	print('mid point row: ', len(data)/2);
-	pprint(data[int(len(data)/2)]);
 
 	print('plotting {} points'.format(len(data)))
 
@@ -79,5 +95,5 @@ if __name__ == '__main__':
 	except IndexError:
 		calibration_fix = 0;
 
-	parse_data(filename, int(peaks), int(valleys), int(calibration_fix));
+	parse_data(filename, float(peaks), float(valleys), float(calibration_fix));
 

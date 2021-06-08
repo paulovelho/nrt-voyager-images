@@ -21,7 +21,7 @@ def parse_data(filename, peak, valley):
 		for line in file:
 			c = line.split('\t')
 			times.append( int(c[0]) )
-			data.append( int(c[1].rstrip("\n")) )
+			data.append( float(c[1].rstrip("\n")) )
 
 	wave_start = 0;
 	wave_arr = [];
@@ -98,5 +98,5 @@ if __name__ == '__main__':
 	except IndexError:
 		print('Index Error!');
 
-	parse_data(filename, int(peaks), int(valleys))
+	parse_data(filename, float(peaks), float(valleys))
 
