@@ -5,7 +5,7 @@ calibration (single wave):
 
 
 ```
-python3 wav-analyze.py left01-circle 5971 89 5121
+python3 wav-analyze.py left01-circle 5971 89 4500
 python3 calibrate.py left01-circle 4000 -2000
 python3 voyager.py left01-circle 4000 -2000
 
@@ -27,8 +27,13 @@ python3 voyager.py left-y 4000 -2000
 ```
 
 
-peak = 150000000
-valley = -100000000
+
+
+```
+python3 wav-analyze.py left-z 4480 71 4467
+python3 calibrate.py left-y 5000 -2000
+python3 voyager.py left-y 5000 -2000
+```
 
 
 

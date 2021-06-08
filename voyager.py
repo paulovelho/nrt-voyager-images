@@ -40,7 +40,7 @@ def parse_data(filename, peak, valley, fix):
 				continue;
 		else:
 			val = normalizeColor(d, peak, valley);
-			wave_arr.append(d);
+			wave_arr.append(val);
 			if(d > peak):
 				print('wave ending at {} with {} points'.format(i, len(wave_arr)));
 				wave_start = 0;
@@ -65,7 +65,8 @@ def parse_data(filename, peak, valley, fix):
 
 def normalizeColor(c, peak, valley):
 	c = c - valley;
-	return c/peak;
+	c = c / peak * 100;
+	return c;
 
 def plot_image(data):
 	data = data.transpose();
