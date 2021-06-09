@@ -10,22 +10,22 @@ python3 voyager.py left01-circle 4000
 
 ## numbers 1
 ```
-python3 wav-analyze.py left03 4829 139 4448
-python3 calibrate.py left03 5000
-python3 voyager.py left03 5000
+python3 wav-analyze.py left-numbers1 4829 139 4448
+python3 calibrate.py left-numbers1 5000
+python3 voyager.py left-numbers1 5000
 ```
 
 ## numbers 2
 ```
-python3 wav-analyze.py left04 4916 97 4461
-python3 calibrate.py left04 6000
-python3 voyager.py left04 6000
+python3 wav-analyze.py left-numbers2 4916 97 4461
+python3 calibrate.py left-numbers2 5300
+python3 voyager.py left-numbers2 5300
 ```
 
 ## planets
 ```
-python3 wav-analyze.py left05 5142 208 4597
-python3 voyager.py left05 6000
+python3 wav-analyze.py left-planets 5142 208 4597
+python3 voyager.py left-planets 5200
 ```
 
 
