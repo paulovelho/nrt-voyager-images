@@ -10,11 +10,11 @@ Luiz Carlos Vieira
 Ron Barry
 
 ## based on
-https://boingboing.net/2017/09/05/how-to-decode-the-images-on-th.html
+[https://boingboing.net/2017/09/05/how-to-decode-the-images-on-th.html](https://boingboing.net/2017/09/05/how-to-decode-the-images-on-th.html)
 by Ron Barry
 
 ### content available
-https://drive.google.com/drive/folders/0B0Swx_1rwA6XcFFLc29ncFJSZmM
+[https://drive.google.com/drive/folders/0B0Swx_1rwA6XcFFLc29ncFJSZmM](https://drive.google.com/drive/folders/0B0Swx_1rwA6XcFFLc29ncFJSZmM)
 Ron Barry kindly let available all the images and the raw wav file in high quality.  
 I can't imagine who he had to bribe to get access to that wav but I only could build this because he has done this job before.   
 You can find the .wav from the disc on the drive.  
@@ -38,9 +38,9 @@ packages used:
 - matplotlib
 
 
-## To Do:
+## TO DO:
 ### Right channel images
-I am not really good using Audacity, so I could only export wavs from the left channel of the sound file.
+I am not really good using Audacity, so I could only export wavs from the left channel of the sound file.  
 I know. Shame on me. This might be a really simple thing to do, but I am not that smart despite of what you might think for what I achieved in this repo. It was mostly lucky, believe me.
 
 ### Improve code quality
@@ -51,3 +51,8 @@ Everyone is invited to find new and better solutions that capture the image usin
 ### Colored images
 There are colored images hidden in the middle of the code.  
 Those can be obtained by mixing three images from three different waves, but I will be terribly honest and admit that I don't understand how to do it.
+
+### amplitude x decibels
+The wave is being captured and analyized as the default measurement system from the `scipy.io` package: amplitude.  
+I believe that if we get the wave with the points in decibels values, I can improve the alghoritm and the final quality of the images.
+
