@@ -2,12 +2,12 @@
 
 
 ## developed by
-Paulo Henrique Martins
-@paulovelho
+Paulo Henrique Martins  
+[@paulovelho](https://twitter.com/paulovelho)
 
 #### with a HUGE help of
-Luiz Carlos Vieira
-Ron Barry
+Luiz Carlos Vieira  
+Ron Barry  
 
 ## based on
 [https://boingboing.net/2017/09/05/how-to-decode-the-images-on-th.html](https://boingboing.net/2017/09/05/how-to-decode-the-images-on-th.html)
