@@ -14,7 +14,7 @@ def plot_wave(wave):
 	plt.show();
 
 
-def parse_data(filename, peak, valley):
+def parse_data(filename, peak):
 	data = [];
 	times = [];
 	with open('data/' + filename + '.txt', "r") as file:
@@ -23,38 +23,32 @@ def parse_data(filename, peak, valley):
 			times.append( int(c[0]) )
 			data.append( float(c[1].rstrip("\n")) )
 
-	wave_start = 0;
-	wave_arr = [];
 	timestamp = '';
-
 	wave_sizes = [];
 	wave_times = [];
+	wave_arr = [];
 	arr = [];
+
+	valley = np.min(data);
 
 	for i in range(len(data)):
 		d = data[i];
 		t = times[i];
-		if(wave_start == 0):
-			if(d < valley):
-				wave_start = i;
-				wave_arr = [];
-				timestamp = str(t);
-		else:
-			if(d > peak):
-				wave_sizes.append(len(wave_arr))
+		if( d > peak ):
+			if( len(wave_arr) > 100 ):
 				timestamp = timestamp + '-' + str(t);
-				print('wave {} goes from {} with {} points'.format(len(arr), timestamp, len(wave_arr)));
 				wave_times.append(timestamp);
+				print('wave {} goes from {} with {} points'.format(len(arr), timestamp, len(wave_arr)));
+				print('wave ending at {} with {} points'.format(i, len(wave_arr)));
+				wave_sizes.append(len(wave_arr))
 				arr.append(wave_arr);
-				wave_start = 0;
-				wave_arr = [];
-			else:
-				wave_arr.append(d);
+				arr.append(wave_arr);
+			wave_arr = [];
+			timestamp = ''
+		else:
+			wave_arr.append(d);
 
-
-	# delete problematic nodes
-#	del(arr[len(arr)-1]);
-#	del(arr[0]);
+	del(arr[0]);
 
 	wave_avg = math.floor( sum(wave_sizes) / len(wave_sizes) )
 	max_len = np.max([len(a) for a in arr])
@@ -87,16 +81,15 @@ def analyze(data, times):
 
 
 if __name__ == '__main__':
-	if len(sys.argv) < 3:
+	if len(sys.argv) < 2:
 		print('Missing information to work with')
 		print('Usage: python voyager.py [file name (inside ./data)] [peaks] [valleys]')
 		exit()
 	filename = sys.argv[1]
 	try:
 		peaks = sys.argv[2]
-		valleys = sys.argv[3]
 	except IndexError:
 		print('Index Error!');
 
-	parse_data(filename, float(peaks), float(valleys))
+	parse_data(filename, float(peaks))
 

@@ -1,6 +1,5 @@
 import sys
 import math
-import statistics
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -37,6 +36,7 @@ def imbfix(data):
 def open_wav(file, time, start, end):
 	sampleRate, data = wavfile.read('./wav/' + file + '.wav', 'r')
 
+#	pprint(data);
 	duration = len(data)/sampleRate
 	time_plot = np.arange(0,duration,1/sampleRate)
 	print('given duration: {} | estimated duration: {}'.format(time, duration));
