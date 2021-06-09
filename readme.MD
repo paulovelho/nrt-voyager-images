@@ -1,35 +1,14 @@
 # Voyager image converter
 
+In 1977 NASA send two probes to space: Voyagers 1 and 2.
+Both were destinated to leave the solar system and reach the unknown.
 
+NASA asked Carl Sagan to create a message from Earth for whatever or whoever get it. Sagan built a golden disc with some Earthian music such as Beethoven and Johnny B. Goode and sent some images encoded as sounds.
 
-#### based on
-https://boingboing.net/2017/09/05/how-to-decode-the-images-on-th.html
+The cover of the disc is an auxiliar message, to help to decode the hidden images inside it:
 
+![alt text](./images/voayager-disc.png "Voyager disc")
 
-
-#### content available
-https://drive.google.com/drive/folders/0B0Swx_1rwA6XcFFLc29ncFJSZmM
-
-You can find the .wav from the disc on the drive
-
-
-#### Audacity
-for Linux
-
-```
-sudo add-apt-repository ppa:ubuntuhandbook1/audacity
-sudo apt update
-sudo apt install audacity
-```
-
-
-
-
-## building:
-
-for development this can be dockerized to `localhost.com`
-`docker-compose --verbose-up`
-
-
+Well, it seems tough. Let's find out how to get those images out of here.
 
 
