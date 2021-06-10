@@ -3,10 +3,10 @@
 
 ## Introduction
 
-In 1977 NASA send two probes to space: Voyagers 1 and 2.
+In 1977 NASA sent two probes to space: Voyagers 1 and 2.
 Both were destinated to leave the solar system and reach the unknown.
 
-At the time, NASA asked Carl Sagan to create a message from Earth for whatever or whoever get it. Sagan built a golden disc with some Earthian music such as Beethoven and Johnny B. Goode and sent some images encoded as sounds.
+At the time, NASA asked Carl Sagan to create a message from Earth for whatever or whoever gets it. Sagan built a golden disc with some Earthian music such as Beethoven and Johnny B. Goode and sent some images encoded as sounds.
 
 The cover of the disc is an auxiliar message, to help to decode the hidden images inside it:
 
@@ -21,7 +21,7 @@ My first idea was to build something in Javascript. As this project's goal was n
 
 Oh god, how naïve!
 
-Supposing that each image has `512` pixels width and `384` pixels height, this would be `512 * 384 = 196.608` points to manage individually. That means I would have to iterate and manipulate an array of around 200.000 items. That would be not viable at all for running inside a browser.
+Supposing that each image has `512` pixels width and `384` pixels height, this would be `512 * 384 = 196.608` points to manage individually. That means I would have to iterate and manipulate an array of around 200.000 numbers. That would be not viable at all for running inside a browser.
 
 At least I was smart enough to give up this idea quickly.
 
@@ -76,6 +76,8 @@ Let's zoom the .wav:
 
 Ok, looking closely we can see that the shape between the peaks start as a single wave and splits in two... exploring further, it gets closer again after merging in a single wave once more. If we think on every column of pixels required to build a circle, we could assume that every interval between peaks can represent a column of pixels.
 
+I used Audacity to export a single wave set of points in .txt files and then used the script inside `voyager.py` to examine and play around with the points, plotting the final result with `matplotlib` python library.
+
 Let's divide the amount of time in the wav by the amount of columns and...
 
 ![alt text](./images/nothing.jpeg "Nothing!")
@@ -95,7 +97,7 @@ I used a value for the alghoritm to find out when a wave is in its peak and anot
 ![alt text](./images/circle-1.jpeg "The circle")
 
 YES! I am a genius!  
-Look at that! an almost-perfect egg. I am so excited that I post it to Instagram, can you believe how excited this is?
+Look at that! an almost-perfect egg. I am so excited that I post it to Instagram, can you believe how amazing this is?
 
 Do you see that the egg ends abruptly? Well.. the reason for that is because I am exporting the points from the wav using Audacity and the application only allows me to plot the first million points in a .txt. A million points for a sound wave is a hell lot of things for any 3 minute-music, but not much when you are trying to build an image plotting out the points of every 9 milisseconds wave in an y-axis.
 
@@ -107,20 +109,125 @@ I got the calibration image but failed to get everything else.
 Will aliens face this same issue when finding the voyager?
 
 
+## Starting all over again
 
+Once more it was Luiz who gave me the directions: "Why are you using Audacity to export the points? Why don't you open the .wav directly on python?".  
+Great question. Why? Well.. It's my first time, I didn't think I could do that on python. Stupid me.
 
+Ok, so instead of creating a single huge python file, I decided to split the code because I was getting confused already. I created a new script `wav-analyze.py` to open wav files, read the points and save them in a .txt file for the main script to use it just as it was doing before.  
+Once I was already there, I decided to use `wav-analyze.py` to filter some data as well, so I would have lighter .txt files.
 
+I will examine the wave inside audacity, manually find the point where the image data begins, find the point where the image data ends and ask the script to save just that in-between data in a txt file.
 
+Like this:
+```
+$ python3 wav-analyze.py [wav-file (inside wav folder)] [total duration (ms)] [image start (ms)] [image end (ms)]
+```
+example:
+```
+python3 wav-analyze.py left01-circle 5971 89 4500
+```
+
+I found out later that I didn't need to send the duration, there was a smart way to calculate it from python:
+```
+	sampleRate, data = wavfile.read('./wav/' + file + '.wav', 'r')
+	duration = len(data)/sampleRate
+```
+
+I was plotting the final wave result as well because I was looking at it in the graph and deciding where I would say that were the peaks and valleys for the other script.
+
+After generated the .txt I was using the `voyager.py` to get the points just like before... but something was not the same: the way I was plotting the points were not the same the way Audacity was doing. I still needed to work on that script a bit.
+
+First thing: my generated txts were working with huge numbers for each point. I had to do something to adjust the colors on the final plot. So I created this function:
+```
+def normalizeColor(c, peak, valley):
+	c = c - valley;
+	c = c / peak * 100;
+	return c;
+```
+
+As the valley is below zero, I substracted it from every point in order to throw everything in the positive numbers. Than I divide it all by the peak just to have smaller values to deal. Than I mutiply it by 100, I don't remember why, there's more than one week that I wrote this function, It might be wrong but I will not touch it right now.
+
+The result was a disaster. I failed miserably. I couldn't even see the circle anymore. I was starting all over again.
+
+I was almost gaving up when I had an eureka-moment while playing videogames: I don't need to check the valleys, I only need to check the peaks. There were some sections where the image data were going below the valley points, so I had to get them too.
+
+I literally deleted the `parse_data` function and built it all over again. The main loop looks like this in the final version:
+```
+	for i in range(len(data)):
+		d = data[i];
+		if( d > peak ):
+			if( len(wave_arr) > 100 ):
+				print('wave ending at {} with {} points'.format(i, len(wave_arr)));
+				wave_sizes.append(len(wave_arr))
+				arr.append(wave_arr);
+				arr.append(wave_arr);
+			wave_arr = [];
+		else:
+			val = normalizeColor(d, peak, valley);
+			wave_arr.append(val);
+
+	del(arr[0]);
+```
+
+If the point I'm looking is above the peak value I will reset the wave or, if the wave has enough points to be considered a line in the final image, I will add them to the final array of points. I'm adding it twice to get larger images (it's cheating, I know). The `wave_sizes` was there only for statistics and debugging, I can remove it now, but it doesn't hurt. If the point is below the peak line, I will make that random math on it and append it to the current column array.
+
+Holy crap. It worked. I still can't believe it. Look at me, NASA, I've done it!
+
+There is another script called `callibaration.py` that will throw me some useful information I was using in the start to find out which value to use on the peak. I was not using it in the end but I left it here because it might be useful at any time.
+
+As a last special touch, I also send the colormap for putting some nice effects on the final plots, I liked it.
+```
+python voyager.py [file name (inside ./data)] [peaks] [color]
+```
 
 ## Using the script
+I have a series of different working examples here:
 [list of available commands](commands.MD)
+
+You're invited to play around with this, play around with the wavs, play around with the code, whatever. Fork it and play around, the world is yours.
+
+
+## Images
+
+Of course I will share some samples of the extracted images, I am proud of them.
+
+![alt text](./images/decoded_number.jpeg)
+
+![alt text](./images/decoded_numbers.png)
+
+![alt text](./images/decoded_numbers2.png)
+
+![alt text](./images/decoded_chemistry.png)
+
+![alt text](./images/decoded_chemistry2.png)
+
+![alt text](./images/decoded_planets.png)
+
+![alt text](./images/decoded_earth.jpeg)
+
+![alt text](./images/decoded_horse.jpeg)
+
+![alt text](./images/decoded_animals.png)
+
+![alt text](./images/decoded_dna.png)
+
+![alt text](./images/decoded_body.png)
+
+
 
 
 
 ## About and setup
+
 I have a lot to thank during the small period of time that I worked with this.  
 [Thank you, everyone!](credits.MD)
 
 
+## Fork and contact
 
+As I said, everybody is invited to play with this code.  
+Fork it and ping me about your progress, I will be excited to see it.
+
+If you built anything in any other language regarding the same project, let me know as well! =)
 

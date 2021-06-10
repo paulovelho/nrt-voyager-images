@@ -71,7 +71,7 @@ def plot_image(data):
 if __name__ == '__main__':
 	if len(sys.argv) < 2:
 		print('Missing information to work with')
-		print('Usage: python voyager.py [file name (inside ./data)] [peaks] [valleys]')
+		print('Usage: python voyager.py [file name (inside ./data)] [peaks] [color]')
 		exit()
 	filename = sys.argv[1];
 	try:

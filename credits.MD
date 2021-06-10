@@ -7,14 +7,14 @@ Paulo Henrique Martins
 
 #### with a HUGE help of
 Luiz Carlos Vieira  
-Ron Barry  
+...and Ron Barry  
 
 ## based on
 [https://boingboing.net/2017/09/05/how-to-decode-the-images-on-th.html](https://boingboing.net/2017/09/05/how-to-decode-the-images-on-th.html)
 by Ron Barry
 
 ### content available
-[https://drive.google.com/drive/folders/0B0Swx_1rwA6XcFFLc29ncFJSZmM](https://drive.google.com/drive/folders/0B0Swx_1rwA6XcFFLc29ncFJSZmM)
+[https://drive.google.com/drive/folders/0B0Swx_1rwA6XcFFLc29ncFJSZmM](https://drive.google.com/drive/folders/0B0Swx_1rwA6XcFFLc29ncFJSZmM)  
 Ron Barry kindly let available all the images and the raw wav file in high quality.  
 I can't imagine who he had to bribe to get access to that wav but I only could build this because he has done this job before.   
 You can find the .wav from the disc on the drive.  
@@ -36,6 +36,12 @@ packages used:
 - scipy.io
 - math
 - matplotlib
+
+
+## Thank You!
+First to Luiz Carlos Vieira. Without him, I would not be able to make this. Thanks, Luiz, you were of a huge help and support.
+
+Also Galvão Chucruts - that I will always thank in any nRT project.
 
 
 ## TO DO:

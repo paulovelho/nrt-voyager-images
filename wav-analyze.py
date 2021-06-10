@@ -16,23 +16,6 @@ def plot_wave(data, time=[]):
 	plt.show();
 
 
-def imbfix(data):
-	number_of_scans = 512;
-	offset = 0;
-	scan_line_width = 3197;
-	image_data = [];
-
-	for scan in range(number_of_scans):
-		chunk = [_m for _m in data[int(offset):int(offset) + scan_line_width]]
-		if len(chunk) != scan_line_width:
-			chunk = np.zeros(scan_line_width)
-			offset_exceeded = True
-		image_data.append(chunk)
-		offset += scan_line_width
-
-	return image_data;
-
-
 def open_wav(file, time, start, end):
 	sampleRate, data = wavfile.read('./wav/' + file + '.wav', 'r')
 
