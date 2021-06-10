@@ -192,8 +192,6 @@ You're invited to play around with this, play around with the wavs, play around 
 
 Of course I will share some samples of the extracted images, I am proud of them.
 
-![alt text](./images/decoded_number.jpeg)
-
 ![alt text](./images/decoded_numbers.png)
 
 ![alt text](./images/decoded_numbers2.png)
