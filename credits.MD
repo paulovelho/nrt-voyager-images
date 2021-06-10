@@ -6,7 +6,7 @@ Paulo Henrique Martins
 [@paulovelho](https://twitter.com/paulovelho)
 
 #### with a HUGE help of
-Luiz Carlos Vieira  
+Luiz Carlos Vieira [@luigivieira](https://github.com/luigivieira)  
 ...and Ron Barry  
 
 ## based on
