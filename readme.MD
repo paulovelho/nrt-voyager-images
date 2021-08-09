@@ -148,11 +148,11 @@ def normalizeColor(c, peak, valley):
 	return c;
 ```
 
-As the valley is below zero, I substracted it from every point in order to throw everything in the positive numbers. Than I divide it all by the peak just to have smaller values to deal. Than I mutiply it by 100, I don't remember why, there's more than one week that I wrote this function, It might be wrong but I will not touch it right now.
+As the valley is below zero, I substracted it from every point in order to throw everything in the positive numbers. Then I divide it all by the peak just to have smaller values to deal. Then I mutiply it by 100, I don't remember why, there's more than one week that I wrote this function, It might be wrong but I will not touch it right now.
 
 The result was a disaster. I failed miserably. I couldn't even see the circle anymore. I was starting all over again.
 
-I was almost gaving up when I had an eureka-moment while playing videogames: I don't need to check the valleys, I only need to check the peaks. There were some sections where the image data were going below the valley points, so I had to get them too.
+I was almost giving up when I had an eureka-moment while playing videogames: I don't need to check the valleys, I only need to check the peaks. There were some sections where the image data were going below the valley points, so I had to get them too.
 
 I literally deleted the `parse_data` function and built it all over again. The main loop looks like this in the final version:
 ```
