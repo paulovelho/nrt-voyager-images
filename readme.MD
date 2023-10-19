@@ -1,16 +1,16 @@
 # Voyager image converter
 
-Project built for development of this article: 
+Project built for the development of this article: 
 [http://nrt.paulovelho.com.br/telegrama-legal/](http://nrt.paulovelho.com.br/telegrama-legal)
 
 ## Introduction
 
 In 1977 NASA sent two probes to space: Voyagers 1 and 2.
-Both were destinated to leave the solar system and reach the unknown.
+Both were destined to leave the solar system and reach the unknown.
 
 At the time, NASA asked Carl Sagan to create a message from Earth for whatever or whoever gets it. Sagan built a golden disc with some Earthian music such as Beethoven and Johnny B. Goode and sent some images encoded as sounds.
 
-The cover of the disc is an auxiliar message, to help to decode the hidden images inside it:
+The cover of the disc is an auxiliary message, to help to decode the hidden images inside it:
 
 ![alt text](./images/voayager-disc.png "Voyager disc")
 
@@ -19,7 +19,7 @@ Well, it seems tough. Let's find out how to get those images out of here.
 
 ## Diving in
 
-My first idea was to build something in Javascript. As this project's goal was not only to extract images for myself but to create a visual demonstration of how this process work, I imagined that I could do this whole process via browser - or at least simulating it in a browser.
+My first idea was to build something in Javascript. As this project's goal was not only to extract images for myself but to create a visual demonstration of how this process work, I imagined that I could do this whole process via browser - or at least simulate it in a browser.
 
 Oh god, how naïve!
 
@@ -27,17 +27,17 @@ Supposing that each image has `512` pixels width and `384` pixels height, this w
 
 At least I was smart enough to give up this idea quickly.
 
-So, I would need another programming language. Something that would deal good with huge lists of numbers, something that could easily plot images and something light enough to run from any terminal (because I'm too lazy to create an interface, despite my ambicious plans).
+So, I would need another programming language. Something that would deal well with huge lists of numbers, something that could easily plot images, and something light enough to run from any terminal (because I'm too lazy to create an interface, despite my ambitious plans).
 
-I chose `python`. Only because I believed it would satisfy all the requirements, despite, honestly, I never had touched any python project that worthed mentioning, so this would be the first.
+I chose `python`. Only because I believed it would satisfy all the requirements, despite, honestly, I never touched any python project that worthed mentioning, so this would be the first.
 
 Hands on!
 
 
 ## Viewing the sound
 
-Ron Barry built something like this in the past and made the .wav file public available (you can find it in the [about section](credits.MD)). I owe him a lot.  
-Apart from that huge 1,5GB and roughly 8 minutes wav file, I could only find soundcloud and youtube samples of the audio and, honestly: they are useless. The data on the video was too compressed to extract anything from it.
+Ron Barry built something like this in the past and made the .wav file publicly available (you can find it in the [about section](credits.MD)). I owe him a lot.  
+Apart from that huge 1,5GB and roughly 8-minute wav file, I could only find soundcloud and youtube samples of the audio, and, honestly: they are useless. The data on the video was too compressed to extract anything from it.
 
 That raw .wav is also not included in this project because it's fucking 1,5GB, I don't want to push github that much.
 
@@ -45,14 +45,14 @@ Opening the .wav in Audacity, we can find the file:
 
 ![alt text](./images/wav_full.png "Wav File")
 
-Do you see each one of those peaks? In every interval between them you have an image. If you are smarter than I am (and a bet you are, believe me), you will be much faster to notice that the left channel (top) and the right channel (bottom) are not synchronized: each channel have different images at different times.
+Do you see each one of those peaks? In every interval between them, you have an image. If you are smarter than I am (and I bet you are, believe me), you will be much faster to notice that the left channel (top) and the right channel (bottom) are not synchronized: each channel has different images at different times.
 
 Ok, let's check what the disc cover can tell us:
 
 ![alt text](./images/voyager_disc-detail.png "How to read")
 
 The first box represents how to read the data: it should be read from top to bottom, left to right, plotting the points in the sequence it displays.  
-The second image could be read as the Brazil's flag without the diamond shape, and is the closest Brazil got to really go to space. But it's the calibration image, a simple shape for alien researchers to use as base to build their algorithms.  
+The second image could be read as the Brazil's flag without the diamond shape, and is the closest Brazil got to really going to space. But it's the calibration image, a simple shape for alien researchers to use as a base to build their algorithms.  
 They don't have ways to find that out, it's honestly not too obvious.
 
 Ok. Now I have the sound wave and I have a sample result. Let's dig deeper.
@@ -76,7 +76,7 @@ Let's zoom the .wav:
 
 ![alt text](./images/wav-circle_opening.png "Circle in the wave (zoom)")
 
-Ok, looking closely we can see that the shape between the peaks start as a single wave and splits in two... exploring further, it gets closer again after merging in a single wave once more. If we think on every column of pixels required to build a circle, we could assume that every interval between peaks can represent a column of pixels.
+Ok, looking closely we can see that the shape between the peaks starts as a single wave and splits in two... exploring further, it gets closer again after merging in a single wave once more. If we think of every column of pixels required to build a circle, we could assume that every interval between peaks can represent a column of pixels.
 
 I used Audacity to export a single wave set of points in .txt files and then used the script inside `voyager.py` to examine and play around with the points, plotting the final result with `matplotlib` python library.
 
@@ -94,17 +94,17 @@ What if instead of a fixed time for each wave, I made a dynamic way to calculate
 Great!  
 I mean, not great, but look there, you can kind of see the circle if you get drunk in the same syntony.
 
-I used a value for the alghoritm to find out when a wave is in its peak and another value for the alghoritm to find out when it reached the bottom (no, it's not smart enough to find it by itself). Tweaking a little bit there and back and...
+I used a value for the algorithm to find out when a wave is at its peak and another value for the algorithm to find out when it reached the bottom (no, it's not smart enough to find it by itself). Tweaking a little bit there and back and...
 
 ![alt text](./images/circle-1.jpeg "The circle")
 
 YES! I am a genius!  
-Look at that! an almost-perfect egg. I am so excited that I post it to Instagram, can you believe how amazing this is?
+Look at that! an almost-perfect egg. I am so excited that I posted it to Instagram, can you believe how amazing this is?
 
-Do you see that the egg ends abruptly? Well.. the reason for that is because I am exporting the points from the wav using Audacity and the application only allows me to plot the first million points in a .txt. A million points for a sound wave is a hell lot of things for any 3 minute-music, but not much when you are trying to build an image plotting out the points of every 9 milisseconds wave in an y-axis.
+Do you see that the egg ends abruptly? Well.. the reason for that is that I am exporting the points from the wav using Audacity and the application only allows me to plot the first million points in a .txt. A million points for a sound wave is a hell lot of things for any 3-minute-music, but not much when you are trying to build an image plotting out the points of every 9 milisseconds wave in an y-axis.
 
 Shit!
-Well, Let's take a look what we have here in the second piece of audio.  
+Well, Let's take a look at what we have here in the second piece of audio.  
 Pure gibberish.
 
 I got the calibration image but failed to get everything else.  
@@ -114,12 +114,12 @@ Will aliens face this same issue when finding the voyager?
 ## Starting all over again
 
 Once more it was Luiz who gave me the directions: "Why are you using Audacity to export the points? Why don't you open the .wav directly on python?".  
-Great question. Why? Well.. It's my first time, I didn't think I could do that on python. Stupid me.
+Great question. Why? Well... It's my first time, I didn't think I could do that on python. Stupid me.
 
-Ok, so instead of creating a single huge python file, I decided to split the code because I was getting confused already. I created a new script `wav-analyze.py` to open wav files, read the points and save them in a .txt file for the main script to use it just as it was doing before.  
+Ok, so instead of creating a single huge python file, I decided to split the code because I was getting confused already. I created a new script `wav-analyze.py` to open wav files, read the points, and save them in a .txt file for the main script to use it just as it was done before.  
 Once I was already there, I decided to use `wav-analyze.py` to filter some data as well, so I would have lighter .txt files.
 
-I will examine the wave inside audacity, manually find the point where the image data begins, find the point where the image data ends and ask the script to save just that in-between data in a txt file.
+I will examine the wave inside audacity, manually find the point where the image data begins, find the point where the image data ends, and ask the script to save just that in-between data in a txt file.
 
 Like this:
 ```
@@ -138,7 +138,7 @@ I found out later that I didn't need to send the duration, there was a smart way
 
 I was plotting the final wave result as well because I was looking at it in the graph and deciding where I would say that were the peaks and valleys for the other script.
 
-After generated the .txt I was using the `voyager.py` to get the points just like before... but something was not the same: the way I was plotting the points were not the same the way Audacity was doing. I still needed to work on that script a bit.
+After generating the .txt I was using the `voyager.py` to get the points just like before... but something was not the same: the way I was plotting the points were not the same the way Audacity was doing. I still needed to work on that script a bit.
 
 First thing: my generated txts were working with huge numbers for each point. I had to do something to adjust the colors on the final plot. So I created this function:
 ```
@@ -148,7 +148,7 @@ def normalizeColor(c, peak, valley):
 	return c;
 ```
 
-As the valley is below zero, I substracted it from every point in order to throw everything in the positive numbers. Then I divide it all by the peak just to have smaller values to deal. Then I mutiply it by 100, I don't remember why, there's more than one week that I wrote this function, It might be wrong but I will not touch it right now.
+As the valley is below zero, I subtracted it from every point in order to throw everything in the positive numbers. Then I divide it all by the peak just to have smaller values to deal. Then I multiplied it by 100, I don't remember why, there's more than one week since I wrote this function, It might be wrong but I will not touch it right now.
 
 The result was a disaster. I failed miserably. I couldn't even see the circle anymore. I was starting all over again.
 
@@ -172,13 +172,13 @@ I literally deleted the `parse_data` function and built it all over again. The m
 	del(arr[0]);
 ```
 
-If the point I'm looking is above the peak value I will reset the wave or, if the wave has enough points to be considered a line in the final image, I will add them to the final array of points. I'm adding it twice to get larger images (it's cheating, I know). The `wave_sizes` was there only for statistics and debugging, I can remove it now, but it doesn't hurt. If the point is below the peak line, I will make that random math on it and append it to the current column array.
+If the point I'm looking at is above the peak value I will reset the wave or, if the wave has enough points to be considered a line in the final image, I will add them to the final array of points. I'm adding it twice to get larger images (it's cheating, I know). The `wave_sizes` was there only for statistics and debugging, I can remove it now, but it doesn't hurt. If the point is below the peak line, I will make that random math on it and append it to the current column array.
 
 Holy crap. It worked. I still can't believe it. Look at me, NASA, I've done it!
 
-There is another script called `callibaration.py` that will throw me some useful information I was using in the start to find out which value to use on the peak. I was not using it in the end but I left it here because it might be useful at any time.
+There is another script called `callibaration.py` that will throw me some useful information I was using at the start to find out which value to use on the peak. I was not using it in the end but I left it here because it might be useful at any time.
 
-As a last special touch, I also send the colormap for putting some nice effects on the final plots, I liked it.
+As a last special touch, I also sent the colormap for putting some nice effects on the final plots, I liked it.
 ```
 python voyager.py [file name (inside ./data)] [peaks] [color]
 ```
@@ -220,7 +220,7 @@ Of course I will share some samples of the extracted images, I am proud of them.
 
 ## About and setup
 
-I have a lot to thank during the small period of time that I worked with this.  
+I have a lot to thank during the short period of time that I worked with this.  
 [Thank you, everyone!](credits.MD)
 
 
